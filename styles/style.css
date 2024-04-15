@@ -5,7 +5,28 @@ body {
     margin: 0;
     width: 100%;
 }
-/* header */
+
+main {
+    position: relative;
+}
+/* button and input */
+input {
+    border: solid #cc9507 0.5px;
+    border-radius: 25px;
+    background-color:#d9d9d9;
+}
+
+button {
+    border:solid #000 0.5px;
+    background-color: #cc9507;
+    font-family: kanit;
+    border-radius: 25px;
+}
+
+button:hover {
+    background-color: #ffcb46;
+}
+        /* HEADER */
 header {
     background-color: #ffcb46;
     font-family: kanit;
@@ -19,6 +40,7 @@ header {
 h1 {
     margin: 0;
     padding-left: 3%;
+    font-size:64px;
 }
 
 header ul {
@@ -29,5 +51,104 @@ header ul {
     gap: 2.88rem;
     position: absolute;
     right: 5%;
-    
 }
+
+header li {
+    text-transform: uppercase;
+}
+
+.lower-header {
+    background-color: #cc9507;
+    height: 60px;
+    font-size: 36px;
+    font-family: kanit;
+    font-weight: 500;
+    position: relative;
+}
+
+.lower-header span {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+}
+
+#nextGame {
+    position: absolute;
+    left: 50%;
+}
+
+#opp {
+    position: absolute;
+    left: 102%;
+    width: 100%;
+}
+/* SIDE INFO */
+#side-info {
+    width: 10%;
+    height: 40%;
+    font-family: kanit;
+    position: absolute;
+    left: 50%;
+    bottom: 50%;
+    background-color: #ffcb46;
+    border: #cc9507 inset 5px;
+    padding: 10px;
+}
+
+/* MAIN */
+#step-1 {
+    width: 80%;
+    height: 600px;
+    margin: auto;
+    font-family: kanit;
+}
+
+#step-2 {
+    width: 80%;
+    margin: auto;
+    font-family: kanit;
+    margin-bottom: 2%;
+}
+
+#step-2 h3 {
+    font-size: 40px;
+}
+
+#gk h4 {
+    color:#a39838;
+}
+#def h4 {
+    color:#117e15;
+}
+#mid h4 {
+    color:#2e33a9;
+}
+#att h4 {
+    color:#c81717;
+}
+
+/* FOOTER */
+#footer {
+    width: 100%;
+    background-color: #cc9507;
+    font-family: kanit;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    align-items: center;
+}
+
+#lower-nav ul{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+#lower-nav li {
+    text-transform: uppercase;
+}
+
+#footer h2 {margin-left: 2%;}
+#footer p {margin-right: 2%;}
+
