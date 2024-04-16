@@ -1,13 +1,14 @@
-window.onload = pageLoaded;
-function pageLoaded() {
-
-//var sportForm = document.forms.f_form;
-// position variables
 var squadNumber = 0;
 var goalkeepers = 1;
 var defenders = 1;
 var midfielders = 1;
 var attackers = 1;
+window.onload = pageLoaded;
+function pageLoaded() {
+
+//var sportForm = document.forms.f_form;
+// position variables
+
 //form position variables
 var addPlayerBtn = document.getElementById("submitPlayer");
 var newPlayer = document.getElementById("player_in");
@@ -21,8 +22,7 @@ var oppTeam = document.getElementById("opp_in");
 var oppBtn = document.getElementById("oppBtn");
 var fixture = document.getElementById("nextGame");
 
-var squadBtn = document.getElementById("subSQ");
-squadBtn.onclick = formSubmitted;
+
 //error variables
 var error = document.getElementById("error");
 var errorIn = document.getElementById("errorTeamIn");
@@ -30,6 +30,8 @@ var errorIn = document.getElementById("errorTeamIn");
 step_2.style.display = "none";
 fixture.style.display = "none";
 oppBtn.onclick = opponentProcess;
+//form button var
+var squadBtn = document.getElementById("subSQ");
 
 //OPPONENT function
 function opponentProcess() {
@@ -49,7 +51,7 @@ function opponentProcess() {
 
 //STEP 1: Adding the next opponent
 addPlayerBtn.onclick = playerAdded;
-sportForm.onsubmit = formSubmitted; //submit trigger
+//sportForm.onclick = formSubmitted; //submit trigger
 
 //STEP 2: Adding the players
 //player add section
@@ -138,31 +140,54 @@ function playerAdded() {
         squadNumber++;
         }
     }
+    
     return false;
 }
 //FULL SQUAD: function for the whole form
 var successMsg = document.getElementById("success-message");
 function formSubmitted() {
     console.log(squadNumber);
+    console.log(goalkeepers);
+
+
     if (squadNumber < 8) {
+        console.log('ts');
         error.innerHTML = "You don't have enough players to attend the next game!";
         error.style.color = "red";
+        error.style.display = "block";
+        return false;
     } else if (goalkeepers < 2) {
+        console.log('g');
         error.innerHTML = "You need at least 1 goalkeeper!";
         error.style.color = "red";
+        error.style.display = "block";
+        return false;
     } else if (defenders < 3) {
+        console.log('d');
         error.innerHTML = "You need at least 2 defenders!";
         error.style.color = "red";
+        error.style.display = "block";
+        return false;
     } else if (midfielders < 4) {
+        console.log('m');
         error.innerHTML = "You need at least 3 midfielders!";
         error.style.color = "red";
+        error.style.display = "block";
+        return false;
     } else if (attackers < 3) {
+        console.log('a');
         error.innerHTML = "You need at least 2 attackers!";
         error.style.color = "red";
+        error.style.display = "block";
+        return false;
     } else {
+        console.log('s');   
         successMsg.innerHTML = "Squad looks ready. Good luck in your game!"
     }
     return false;
 }
+
+squadBtn.onclick = formSubmitted;
+
 
 }
