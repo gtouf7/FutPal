@@ -7,4 +7,4 @@
 - CSS
 - Vanilla Javascript, basic DOM
 -----------------------
-### Visit the live website [here](https://gtouf7.github.io/Sport-Attend-IN-PROGRESS-/)
+### Visit the live website [here](https://gtouf7.github.io/Sport-Attend/)
