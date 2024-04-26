@@ -96,7 +96,6 @@ function playerAdded() {
         def_new.innerHTML = newPlayer.value;
         error.style.display = "none";
         newPlayer.value = "";
-        positionChoice.value = "X";
         newPlayer.style.background = "white";
         newPlayer.focus();
         defenders++;
