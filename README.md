@@ -12,4 +12,4 @@
 - CRUD for league tables
 - CRUD for players' stats
 - Scores and fixtures
-### Visit the live website [here](https://gtouf7.github.io/Sport-Attend/)
+### Visit the live website [here](https://gtouf7.github.io/FutPal/)
