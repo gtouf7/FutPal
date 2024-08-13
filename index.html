@@ -2,100 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Sport-Attend</title>
-    <link rel="stylesheet" type="text/css" href="styles/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FütPal</title>
+    <link rel="stylesheet" type="text/css" href="styles/menu.css" />
     <script src="scripts/DOM.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Sport-Attend</h1>
-        <div class="main-nav">
-            <ul>
-                <li id="m_home">home</li>
-                <li id="m_roster">team roster</li>
-                <li id="m_stats">player stats</li>
-                <li id="m_Lboard">leaderboard</li>
-                <li id="m_profile">my profile</li>
-            </ul>
-        </div>
+    <header id="header">
+        <a id="logo-main" href="index.html"><h1>Fütpal</h1></a>
     </header>
-    <div class="lower-header">
-        <span>
-            Welcome back, user!
-        </span>
-        <div id="nextGame">
-            Next fixture: Javascript FC vs <span id="opp"></span>
-        </div>
-    </div>
     <main>
-    <div id="step-1">
-        <div id="errorTeamIn"></div><br>
-        <label>Enter the next game's opponent</label>
-        <input id="opp_in" type="text" name="opponent" placeholder="Team Name FC">
-        <button id="oppBtn">Enter</button>
-    </div>
-    <div id="step-2"> <!-- main flex-->
-    <form name="f_form" id="form-section"> <!-- flex child 1 -->
-        <h3>Team Roster</h2>
-        <h2 id="success-message"></h2>
-        <div id="error"></div><br>
-            <label>Enter a player</label><br>
-            <input id="player_in" type="text" name="player_in" type="text" placeholder="John Doe"><br>
-            <select id="position">
-                <option disabled selected value="X">Choose a position</option>
-                <option value="GK">Goalkeeper</option>
-                <option value="D">Defender</option>
-                <option value="M">Midfielder</option>
-                <option value="A">Attacker</option>
-            </select><br>
-            <button id="submitPlayer" type="submit">Attending</button>
-            <div id="gk">
-                <h4>Goalkeepers</h4>
-                <span id="gk_1"></span><br>
-                <span id="gk_2"></span>
-            </div>
-            <div id="def">
-                <h4>Defenders</h4><br>
-                <span id="def_1"></span><br>
-                <span id="def_2"></span><br>
-                <span id="def_3"></span><br>
-                <span id="def_4"></span>
-            </div>
-            <div id="mid">
-                <h4>Midfielders</h4><br>
-                <span id="mid_1"></span><br>
-                <span id="mid_2"></span><br>
-                <span id="mid_3"></span><br>
-                <span id="mid_4"></span>
-            </div>
-            <div id="att">
-                <h4>Attackers</h4><br>
-                <span id="att_1"></span><br>
-                <span id="att_2"></span><br>
-                <span id="att_3"></span><br>
-                <span id="att_4"></span>
-            </div>
-            <label id="submitForm" name="submit_in">Submit squad</label>
-            <button type="submit" id="subSQ">Submit</button>
-    </form>
-    </div>
-    <div id="side-info"> <!-- flex child 2-->
-        <span>Add your team's members to the roster!</span>
-        <span>One at a time for each position.</span><br>
-        <span>Attention! Make sure to meet the minimum requirement of 8 players, in order to be able play your next football match!</span>
-    </div>
+        <div class="menu-nav">
+            <div class="menu-item"><p>team roster</p></div>
+            <div class="menu-item"><p>player stats</p></div>
+        </div>
+        <div class="menu-nav">
+            <div class="menu-item"><p>leaderboard</p></div>
+            <a class="menu-item" href="attendance.html"><p>attendance</p></a>
+        </div>
     </main>
     <footer id="footer">
         <h2>Sport-Attend</h2>
+        <p>© 2024 Copyright, Georgios Toufexis - HTTP 5122</p>
         <div id="lower-nav">
             <ul>
-                <li id="l_home">home</li>
-                <li id="l_roster">team roster</li>
-                <li id="l_stats">player stats</li>
-                <li id="l_Lboard">leaderboard</li>
+                <li class="lower-nav">home</li>
+                <li class="lower-nav">team roster</li>
+                <li class="lower-nav">player stats</li>
+                <li class="lower-nav">leaderboard</li>
             </ul>
         </div>
-        <p>© 2024 Copyright, Georgios Toufexis - HTTP 5122</p>
     </footer>
-</body>
 </html>
+    

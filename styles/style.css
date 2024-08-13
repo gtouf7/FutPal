@@ -11,30 +11,31 @@ main {
 }
 /* button and input */
 input {
-    border: solid #cc9507 0.5px;
+    border: solid #ffc300 0.5px;
     border-radius: 25px;
     background-color:#d9d9d9;
 }
 
 button {
     border:solid #000 0.5px;
-    background-color: #cc9507;
+    background-color: #ffc300;
     font-family: kanit;
     border-radius: 25px;
 }
 
 button:hover {
-    background-color: #ffcb46;
+    background-color: #ffc300;
 }
         /* HEADER */
 header {
-    background-color: #ffcb46;
+    background-color: #001d3d;
     font-family: kanit;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    height: 10.35rem;
+    height: 5rem;
+    color: #fff;
     position: relative;
 }
 h1 {
@@ -42,15 +43,26 @@ h1 {
     padding-left: 3%;
     font-size:64px;
 }
-
+h1 a {
+    text-decoration: none;
+    color: #fff;
+}
 header ul {
     list-style: none;
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 2.88rem;
-    position: absolute;
-    right: 5%;
+    margin-right: 20px;
+}
+
+.nav-item a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.nav-item a:hover {
+    color: #ffc300;
 }
 
 header li {
@@ -58,9 +70,9 @@ header li {
 }
 
 .lower-header {
-    background-color: #cc9507;
-    height: 60px;
-    font-size: 36px;
+    height: 40px;
+    color: #000;
+    font-size: 29px;
     font-family: kanit;
     font-weight: 500;
     position: relative;
@@ -90,8 +102,9 @@ header li {
     position: absolute;
     left: 50%;
     bottom: 50%;
-    background-color: #ffcb46;
-    border: #cc9507 inset 5px;
+    background-color: #003566;
+    border: #003566 inset 5px;
+    color: #fff;
     padding: 10px;
 }
 
@@ -130,7 +143,8 @@ header li {
 /* FOOTER */
 #footer {
     width: 100%;
-    background-color: #cc9507;
+    background-color: #003566;
+    color: #fff;
     font-family: kanit;
     display: flex;
     flex-direction: row;
