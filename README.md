@@ -1,15 +1,16 @@
-# FütPal
-## FütPal is a mini web application that is used to sign up players for an upcoming 7-aside soccer game.
-### This app has the potential to be expanded.
+# FütPal - Under Development
+## FütPal is a Soccer Fantasy League web application.
+### This app is currently under development.
 ------------------------
-#### Programming languages used:
-- HTML
-- CSS
-- Vanilla Javascript, basic DOM
+#### Programming languages being used:
+- React
+- Node
+- MongoDB for the database
 -----------------------
 #### Features to be added:
 - CRUD for teams and players
 - CRUD for league tables
-- CRUD for players' stats
+- Players Stats
 - Scores and fixtures
-### Visit the live website [here](https://gtouf7.github.io/FutPal/)
+- League registration
+- Admin and team captain functionalities
