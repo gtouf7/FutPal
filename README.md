@@ -13,4 +13,5 @@
 - Players Stats
 - Scores and fixtures
 - League registration
-- Admin and team captain functionalities
+- Admin functionalities
+- Live scores and rewards
