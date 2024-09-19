@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const User = require('./models/User');
+//const fetch = require('node-fetch');
 
 dotenv.config();
 
@@ -14,7 +15,7 @@ app.use(express.json());
 const port = process.env.PORT || 7700;
 
 // GET USER BY EMAIL FOR DEBUGGING PURPOSES
-app.get('/user', async (req, res) => {
+app.get('/api/user', async (req, res) => {
     await DBconn(); // connect to DB
     // dummy email for testing with an existing user
     const email = "osfp7giorgos@email.com";
@@ -29,9 +30,9 @@ app.get('/user', async (req, res) => {
 });
 
 // USER LOGIN 
-app.post('/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
     await DBconn(); // connect to DB
-    const { email, password } = req.body;
+    const { email, password } = req.body; // Get email and password values from frontend login form
 
     try {
         let user = await User.findOne({ email });
@@ -64,7 +65,7 @@ app.post('/login', async (req, res) => {
     }
 });
 // NEW USER REGISTRATION
-app.post('/register', async (req, res) => {
+app.post('/api/register', async (req, res) => {
     // new user data required
     const { username, email, password, country, profileImage, team } = req.body;
     console.log("got the data");
