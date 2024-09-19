@@ -2,8 +2,11 @@
 ## FütPal is a Soccer Fantasy League web application.
 ### This app is currently under development.
 ------------------------
-#### Programming languages being used:
+#### Technologies used:
 - React
+- Next
+- Express
+- Mongoose
 - Node
 - MongoDB for the database
 -----------------------
