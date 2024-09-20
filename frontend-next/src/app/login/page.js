@@ -21,8 +21,11 @@ export default function Login() {
             },
             body: JSON.stringify({ email, password }),
         });
-
+        const data = await response.json();
+        console.log(data);
+        console.log(data.JWToken);
         if (response.ok) {
+            localStorage.setItem('token', data.JWToken);
             router.push('/dashboard');
         } else {
             console.log('Login failed');
