@@ -43,31 +43,35 @@ export default function Register() {
         }
     };
 
+    function toHome() {
+        router.push('/');
+    }
+
     return(
         <div>
-            <h1>FUTPAL</h1>
-            <form onSubmit={handleRegistration}>
+            <h1 className={styles.logo} onClick={toHome}>FUTPAL</h1>
+            <form className={styles.registrationForm} onSubmit={handleRegistration}>
                 <label>Username</label>
-                <input type="text" value={username} placeholder="Your username" onChange={(e) => setUsername(e.target.value)} required /><br />
+                <input className={styles.input} type="text" value={username} placeholder="Your username" onChange={(e) => setUsername(e.target.value)} required /><br />
 
                 <label>Email</label>
-                <input type="email" value={email} placeholder="user@example.com" onChange={(e) => setEmail(e.target.value)} required /><br />
+                <input className={styles.input} type="email" value={email} placeholder="user@example.com" onChange={(e) => setEmail(e.target.value)} required /><br />
                 
                 <label>Password</label>
-                <input type="password" value={password} placeholder="Enter your password" onChange={(e) => setPassword(e.target.value)} required /><br />
+                <input className={styles.input} type="password" value={password} placeholder="Enter your password" onChange={(e) => setPassword(e.target.value)} required /><br />
 
                 <label>Confirm Password</label>
-                <input type="password" value={confirmPassword} placeholder="Re-enter your password" onChange={(e) => setConfirmPassword(e.target.value)} required /><br />
+                <input className={styles.input} type="password" value={confirmPassword} placeholder="Re-enter your password" onChange={(e) => setConfirmPassword(e.target.value)} required /><br />
 
                 <label>Country</label>
-                <select value={country} onChange={(e) => setCountry(e.target.value)}>
+                <select className={styles.input} value={country} onChange={(e) => setCountry(e.target.value)}>
                     <option value='X' disabled>-- Choose a Country --</option>
                     <option value='USA'>United States of America</option>
                     <option value='Canada'>Canada</option>
                     <option value='Greece'>Greece</option>
                     <option value='Germany'>Germany</option>
                 </select><br />
-                <button type="submit">Create Account</button>
+                <button id={styles.btn} type="submit">Create Account</button>
             </form>
         </div>
     );

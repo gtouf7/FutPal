@@ -3,9 +3,10 @@ const DBconn = require('./config/dbUser');
 const dotenv = require("dotenv");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
-const User = require('./models/User');
 const cors = require('cors');
-//const fetch = require('node-fetch');
+// Models
+const User = require('./models/User');
+const Team = require('./models/Team');
 
 dotenv.config();
 
@@ -136,6 +137,21 @@ async function updateUserPassword(email, newPassword) {
     }
 }
 
+/**
+ *  TEAMS SECTION 
+ */
+// GET TEAMS
+app.get('/api/teams', async (req, res) => {
+    await DBconn(); // connect to DB
+    // dummy email for testing with an existing user
+    const name = "Chelsea";
+    let team = await Team.findOne({ name });
+    if (team) {
+        res.json(team);
+    } else {
+        res.status(400).json({ message: "Team doesn't exist" });
+    }
+});
 
 
 // server portal
