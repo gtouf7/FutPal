@@ -1,11 +1,12 @@
 'use client';
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import styles from './dashboard.module.css';
 
 export default function Dashboard() {
+    const router = useRouter();
      // User authorization function to see if the user is logged in
     function userAuth() {
-        const router = useRouter();
     
         useEffect(() => {
             const token = localStorage.getItem('token');
@@ -14,8 +15,18 @@ export default function Dashboard() {
             }
         }, [router]);
     }
+
+    // Logout user
+    function logOut() {
+        localStorage.removeItem('token');
+        console.log('User signed out successfully!'); //debugging
+        router.push('/');
+    }
     userAuth();
     return(
-        <h2>Welcome!</h2>
+        <div>
+            <h2>Welcome!</h2>
+            <p className={styles.logOutBtn} onClick={logOut}>Log Out</p>
+        </div>
     );
 }

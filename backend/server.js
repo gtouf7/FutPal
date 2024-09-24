@@ -1,9 +1,10 @@
 const express = require('express');
-const DBconn = require('./config/db-user');
+const DBconn = require('./config/dbUser');
 const dotenv = require("dotenv");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const User = require('./models/User');
+const cors = require('cors');
 //const fetch = require('node-fetch');
 
 dotenv.config();
@@ -11,6 +12,7 @@ dotenv.config();
 // Initialize express app
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 const port = process.env.PORT || 7700;
 
@@ -69,6 +71,7 @@ app.post('/api/register', async (req, res) => {
     // new user data required
     const { username, email, password, country, profileImage, team } = req.body;
     console.log("got the data");
+    console.log(req.body);
     try {
         await DBconn();
         // Check if a user is already registered with this email
@@ -76,9 +79,9 @@ app.post('/api/register', async (req, res) => {
         if (user) {
             return res.status(400).json({ message: 'This email already exists!' });
         }
+        
         // Hash password
-        const saltRounds = 10;
-        const HashedPwd = await bcrypt.hash(password, saltRounds);
+        const HashedPwd = await bcrypt.hash(password, 10);
         // Create the new user object with the inserted data
         user = new User({
             username,
@@ -90,6 +93,7 @@ app.post('/api/register', async (req, res) => {
             createdAt: new Date(),
             updatedAt: new Date()
         });
+        console.log(user);
         // Save changes
         await user.save();
 
@@ -104,11 +108,12 @@ app.post('/api/register', async (req, res) => {
             }
         });
         console.log(user);
-    } catch {
+    } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error.', error: error.message });
     }
 });
+
 // UPDATE PASSWORD FUNCTION - USED TO DEBUG DATABASE PWD DATA
 async function updateUserPassword(email, newPassword) {
     try {

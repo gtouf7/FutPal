@@ -1,4 +1,4 @@
-//import fetch from 'node-fetch';
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
     const { email, password } = await req.json();
@@ -13,11 +13,11 @@ export async function POST(req) {
         const data = await response.json();
 
         if (response.ok) {
-            return new Response(JSON.stringify(data), { status:200 });
+            return new NextResponse(JSON.stringify(data), { status:200 });
         } else {
-            return new Response(JSON.stringify(data), { status: response.status });
+            return new NextResponse(JSON.stringify(data), { status: response.status });
         }
     } catch (error) {
-        return new Response(JSON.stringify({ message: 'Server error', error: error.message }));
+        return new NextResponse(JSON.stringify({ message: 'Server error', error: error.message }));
     }
 }

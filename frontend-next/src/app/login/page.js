@@ -14,7 +14,7 @@ export default function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        const response = await fetch('api/login', {
+        const response = await fetch('/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -32,6 +32,10 @@ export default function Login() {
         }
     };
 
+    function redirectSignUp() {
+        router.push('/register');
+    }
+
     return(
         <div className={styles.test}>
             <h2>Login</h2>
@@ -40,6 +44,7 @@ export default function Login() {
                 <input type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} /><br />
                 <button type="submit">Login</button>
             </form>
+            <p className={styles.registerBtn} onClick={redirectSignUp}>Create an Account</p>
         </div>
     );
 }
