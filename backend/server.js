@@ -162,14 +162,19 @@ app.get('/api/teamList', async (req, res) => {
 app.post('/api/assignTeam', tokenAuth, async (req, res) => {
     try {
         const userId = req.user.userId; // User's id from JWT
-        const { teamId } = req.body; // User's selected team
+        console.log(req.user);
+        const { teamId } = req.body.teamId; // User's selected team
+        console.log(req.body);
+
         const user = await User.findById(userId); // Get the user
-        console.log(userId);
+        console.log(user);
+        
 
         // Logic to check if the user has a team -- IF REQUIRED
 
         //fetch selected team
         const team = await Team.findById(teamId);
+        console.log(team);
         if (!team) {
             return res.status(400).json({ message: "Team not found." });
         }
