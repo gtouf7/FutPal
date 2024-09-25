@@ -2,7 +2,10 @@ const express = require('express');
 const DBconn = require('./config/dbUser');
 const dotenv = require("dotenv");
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken')
+// token
+const jwt = require('jsonwebtoken');
+const tokenAuth = require('./auth/jwtmiddleware');
+// cors
 const cors = require('cors');
 // Models
 const User = require('./models/User');
@@ -140,18 +143,48 @@ async function updateUserPassword(email, newPassword) {
 /**
  *  TEAMS SECTION 
  */
-// GET TEAMS
-app.get('/api/teams', async (req, res) => {
-    await DBconn(); // connect to DB
-    // dummy email for testing with an existing user
-    const name = "Chelsea";
-    let team = await Team.findOne({ name });
-    if (team) {
-        res.json(team);
-    } else {
-        res.status(400).json({ message: "Team doesn't exist" });
+// GET TEAM and TEAM BY NAME
+app.get('/api/teamList', async (req, res) => {
+    await DBconn();
+    //const name = "Chelsea";
+    //let team = await Team.findOne({ name });
+    try {
+        const teams = await Team.find();
+        res.json(teams);
+    } catch (error) {
+        console.error("Error fething teams", error); //debugging
+        res.status(500).json({ message: "Server error" });
     }
 });
+
+
+// ASSIGN A TEAM TO THE NEW USER
+app.post('/api/assignTeam', tokenAuth, async (req, res) => {
+    try {
+        const userId = req.user.userId; // User's id from JWT
+        const { teamId } = req.body; // User's selected team
+        const user = await User.findById(userId); // Get the user
+        console.log(userId);
+
+        // Logic to check if the user has a team -- IF REQUIRED
+
+        //fetch selected team
+        const team = await Team.findById(teamId);
+        if (!team) {
+            return res.status(400).json({ message: "Team not found." });
+        }
+
+        //Assign the team to the user
+        user.team = teamId;
+        await user.save();
+
+        res.json({ message: "Team successfully assigned", team });
+    } catch (error) {
+        console.error("Error assigning team:", error);
+        res.status(500).json({ message: "Server error." });
+    }
+});
+
 
 
 // server portal
