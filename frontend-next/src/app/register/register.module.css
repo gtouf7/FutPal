@@ -1,0 +1,17 @@
+.logo {
+    text-align: center;
+    cursor: pointer;
+    color: #FFC300;
+}
+.registrationForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: center;
+    padding-top: 5em;
+}
+
+.input{
+    width: 20em;
+    height: 2em;
+}

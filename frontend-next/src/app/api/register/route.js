@@ -11,7 +11,7 @@ export async function POST(req) {
 
     try {
         // Connect to database
-        const response = await fetch(`http://localhost:7700/api/register`, { //url to be changed with new backend deployed url
+        const response = await fetch(`${process.env.PRODURL}/api/register`, { //url to be changed with new backend deployed url
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, email, password, country })

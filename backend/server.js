@@ -24,10 +24,19 @@ const port = process.env.PORT || 7700;
 app.get('/api/user', async (req, res) => {
     await DBconn(); // connect to DB
     // dummy email for testing with an existing user
-    const email = "osfp7giorgos@email.com";
+    const email = "test@email.com";
     let user = await User.findOne({ email });
+    let teamId = user.team;
+    let team = await Team.findById(teamId);
+    console.log(team);
     if (user) {
-        res.json(user);
+        res.json({
+            user: {
+                username: user.username,
+                email: user.email,
+                selectedTeam: team.name,
+            }
+        });
     } else {
         res.status(400).json({ message: "Email doesn't exist" });
     }
@@ -48,23 +57,23 @@ app.post('/api/login', async (req, res) => {
             return res.status(400).json({ message: "Invalid credentials!" });
         }
         // log the stored hash pwd for debugging
-        console.log("Stored password", user.password);
+        /*console.log("Stored password", user.password);
         console.log("provided password", password);
-        console.log("provided email", email);
+        console.log("provided email", email);*/
 
         // Check password
         const isMatch = await bcrypt.compare(password, user.password);
         // pwd match result
         console.log("pwd match result", isMatch);
         if (!isMatch) {
-            console.log("Password incorrect");
+            //console.log("Password incorrect");
             return res.status(400).json({ message: "Invalid credentials!" });
         }
 
         // Generate a JsonWebToken and return the response
         const JWToken = jwt.sign({ userId: user._id }, process.env.JWTSECRET, { expiresIn: '12h' });
-        res.json({ JWToken, user: {username: user.username, email: user.email }})
-        console.log("User signed in successfully!")
+        res.json({ JWToken, user: {username: user.username, email: user.email, team: user.team }});
+        //console.log("User signed in successfully!")
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error', error: error.message });
@@ -97,7 +106,7 @@ app.post('/api/register', async (req, res) => {
             createdAt: new Date(),
             updatedAt: new Date()
         });
-        console.log(user);
+        //console.log(user);
         // Save changes
         await user.save();
 
@@ -161,15 +170,22 @@ app.get('/api/teamList', async (req, res) => {
 // ASSIGN A TEAM TO THE NEW USER
 app.post('/api/assignTeam', tokenAuth, async (req, res) => {
     try {
+        await DBconn();
         const userId = req.user.userId; // User's id from JWT
+        //console.log("zero:", req.user);
         const { teamId } = req.body; // User's selected team
+        //console.log("first:", req.body);
+
         const user = await User.findById(userId); // Get the user
-        console.log(userId);
+        //console.log("second:", user);
+        //console.log('teamid:', teamId);
+        
 
         // Logic to check if the user has a team -- IF REQUIRED
 
         //fetch selected team
         const team = await Team.findById(teamId);
+        //console.log("team:", team);
         if (!team) {
             return res.status(400).json({ message: "Team not found." });
         }
@@ -178,7 +194,7 @@ app.post('/api/assignTeam', tokenAuth, async (req, res) => {
         user.team = teamId;
         await user.save();
 
-        res.json({ message: "Team successfully assigned", team });
+        res.json({ message: "Team successfully assigned", user });
     } catch (error) {
         console.error("Error assigning team:", error);
         res.status(500).json({ message: "Server error." });

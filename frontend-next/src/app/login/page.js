@@ -22,11 +22,17 @@ export default function Login() {
             body: JSON.stringify({ email, password }),
         });
         const data = await response.json();
-        console.log(data);
-        console.log(data.JWToken);
+        //console.log(data.JWToken);
+        //console.log(data.user.team);
         if (response.ok) {
+            const selTeam = data.user.team;
+            if(!selTeam) {
+                router.push('/teamAssign');
+            } else {
             localStorage.setItem('token', data.JWToken);
             router.push('/dashboard');
+            }
+            
         } else {
             console.log('Login failed');
         }
