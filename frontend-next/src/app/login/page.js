@@ -27,6 +27,7 @@ export default function Login() {
         if (response.ok) {
             const selTeam = data.user.team;
             if(!selTeam) {
+                localStorage.setItem('token', data.JWToken);
                 router.push('/teamAssign');
             } else {
             localStorage.setItem('token', data.JWToken);
