@@ -152,13 +152,11 @@ async function updateUserPassword(email, newPassword) {
 /**
  *  TEAMS SECTION 
  */
-// GET TEAM and TEAM BY NAME
+// GET TEAM LIST from DB
 app.get('/api/teamList', async (req, res) => {
-    await DBconn();
-    //const name = "Chelsea";
-    //let team = await Team.findOne({ name });
+    await DBconn(); // Connect to DB
     try {
-        const teams = await Team.find();
+        const teams = await Team.find(); // Get list with available teams
         res.json(teams);
     } catch (error) {
         console.error("Error fething teams", error); //debugging
