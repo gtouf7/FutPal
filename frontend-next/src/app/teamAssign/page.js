@@ -56,6 +56,8 @@ export default function teamAssign() {
             setMessage('Something went wrong');
         }
     }
+    userAuth();
+
     return(
         <div>
             <h2>Choose your team</h2>
