@@ -16,13 +16,15 @@ export default function teamAssign() {
             router.push('/login'); // If there is no token this page will be inaccessible and will redirect the user to the login page
         }
     }, [router]);
-
+    //console.log(process.env.REACT_APP_PRODURL);
     useEffect(() => {
         const teamList = async () => {
             try {
-                const response = await fetch('/api/teamList');
+                const response = await fetch(`http://localhost:7700/api/teamList`);
+                //const response = await fetch(`/api/teamList`);
                 console.log(response);
                 const data = await response.json();
+                console.log(data);
                 setTeams(data);
             } catch (error) {
                 console.error('Error getting teams:', error);
@@ -48,6 +50,7 @@ export default function teamAssign() {
             const data = response.json();
             if (response.ok) {
                 setMessage('Team successfully assigned');
+                router.push('/dashboard');
             } else {
                 setMessage(data.message || 'Error assigning team.');
             }
@@ -56,7 +59,6 @@ export default function teamAssign() {
             setMessage('Something went wrong');
         }
     }
-    userAuth();
 
     return(
         <div>
@@ -64,7 +66,8 @@ export default function teamAssign() {
             <form onSubmit={handleSubmit}>
                 <label htmlFor="team">Select team:</label>
                 <select id="team" value={teamId} onChange={(e) => setTeamId(e.target.value)}>
-                    <option value="X" default disabled>-- Select a Team --</option>
+                    var selected 
+                    <option value="X" disabled="disabled" selected>-- Select a Team --</option>
                     {teams.map((team) => (
                         <option key={team._id} value={team._id}>{team.name}</option>
                     ))}

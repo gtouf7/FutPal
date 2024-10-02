@@ -25,6 +25,7 @@ export default function Login() {
         //console.log(data.JWToken);
         //console.log(data.user.team);
         if (response.ok) {
+            console.log(data);
             const selTeam = data.user.team;
             if(!selTeam) {
                 localStorage.setItem('token', data.JWToken);
