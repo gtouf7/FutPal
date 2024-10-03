@@ -20,8 +20,7 @@ export default function teamAssign() {
     useEffect(() => {
         const teamList = async () => {
             try {
-                const response = await fetch(`http://localhost:7700/api/teamList`);
-                //const response = await fetch(`/api/teamList`);
+                const response = await fetch(`/api/teamList`);
                 console.log(response);
                 const data = await response.json();
                 console.log(data);
@@ -38,16 +37,21 @@ export default function teamAssign() {
         e.preventDefault();
 
         try {
+            const token = localStorage.getItem('token');
+            console.log(token);
+            
             const response = await fetch('/api/assignTeam', {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
-                    Authorizaion: `Bearer ${localStorage.getItem('token')}`,
+                    Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({ teamId }),
             });
-
-            const data = response.json();
+            // Team ID successfully gets read
+            //console.log(teamId);
+            const data = await response.json();
+            console.log('data:', data);
             if (response.ok) {
                 setMessage('Team successfully assigned');
                 router.push('/dashboard');
@@ -67,7 +71,7 @@ export default function teamAssign() {
                 <label htmlFor="team">Select team:</label>
                 <select id="team" value={teamId} onChange={(e) => setTeamId(e.target.value)}>
                     var selected 
-                    <option value="X" disabled="disabled" selected>-- Select a Team --</option>
+                    <option value="selected" disabled="disabled">-- Select a Team --</option>
                     {teams.map((team) => (
                         <option key={team._id} value={team._id}>{team.name}</option>
                     ))}

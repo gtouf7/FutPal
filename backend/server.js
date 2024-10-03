@@ -167,15 +167,16 @@ app.get('/api/teamList', async (req, res) => {
 
 // ASSIGN A TEAM TO THE NEW USER
 app.post('/api/assignTeam', tokenAuth, async (req, res) => {
+    console.log('INSIDE BACKEND CODE');
     try {
         await DBconn();
         const userId = req.user.userId; // User's id from JWT
         //console.log("zero:", req.user);
         const { teamId } = req.body; // User's selected team
-        //console.log("first:", req.body);
+        console.log("first:", req.body);
 
         const user = await User.findById(userId); // Get the user
-        //console.log("second:", user);
+        console.log("second:", user);
         //console.log('teamid:', teamId);
         
 
@@ -183,7 +184,7 @@ app.post('/api/assignTeam', tokenAuth, async (req, res) => {
 
         //fetch selected team
         const team = await Team.findById(teamId);
-        //console.log("team:", team);
+        console.log("team:", team);
         if (!team) {
             return res.status(400).json({ message: "Team not found." });
         }

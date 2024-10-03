@@ -2,14 +2,15 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
     const { team } = await req.json();
-
+    console.log('in here');
+    console.log(req.json());
     try {
-        const response = await fetch(`${process.env.PRODURL}/api/assignTeam`, { //url to be changed with new backend deployed url
+        console.log(`${process.env.REACT_APP_PRODURL}/api/assignTeam`);
+        const response = await fetch(`${process.env.REACT_APP_PRODURL}/api/assignTeam`, { //url to be changed with new backend deployed url
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ team })
         });
-
         const data = await response.json();
 
         if (response.ok) {

@@ -11,7 +11,7 @@ const dbUrl = `mongodb+srv://${process.env.DBUSER}:${process.env.DBPWD}@${proces
 async function DBconn() {
     try {
         await mongoose.connect(dbUrl);
-        console.log("MongoDB connected successfully.");
+        //console.log("MongoDB connected successfully.");
         // Retrieve users
         const users = await User.find();
         return users;

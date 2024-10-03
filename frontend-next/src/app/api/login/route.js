@@ -10,9 +10,11 @@ export async function POST(req) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })
         });
-
+        
         const data = await response.json();
-
+        // debugging: code works
+        //console.log('data:', data);
+        //console.log(process.env.REACT_APP_PRODURL);
         if (response.ok) {
             return new NextResponse(JSON.stringify(data), { status:200 });
         } else {
