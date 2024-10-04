@@ -2,12 +2,9 @@ const jwt = require('jsonwebtoken');
 
 // Authenticate the token
 const tokenAuth = (req, res, next) => {
-    //console.log('inhere');
-    //console.log(req.headers);
-    const authHeader = req.rawHeaders[9];
-    // Terminal testing
-    //const authHeader = req.rawHeaders[9];
-    const token = authHeader && authHeader.split(' ')[1];
+    console.log(req.headers);
+    const token = req.headers['authorization'];
+    console.log(token);
     if (!token) {
         return res.status(401).json({ message: "No token provided" });
     }

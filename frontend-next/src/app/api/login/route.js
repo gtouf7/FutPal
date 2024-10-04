@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
-    console.log(process.env.REACT_APP_PRODURL);
+    //console.log(process.env.REACT_APP_PRODURL);
     const { email, password } = await req.json();
 
     try {

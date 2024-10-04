@@ -21,9 +21,9 @@ export default function teamAssign() {
         const teamList = async () => {
             try {
                 const response = await fetch(`/api/teamList`);
-                console.log(response);
+                //console.log(response);
                 const data = await response.json();
-                console.log(data);
+                //console.log(data);
                 setTeams(data);
             } catch (error) {
                 console.error('Error getting teams:', error);
@@ -35,23 +35,22 @@ export default function teamAssign() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        console.log('team in the front:', teamId);
         try {
             const token = localStorage.getItem('token');
-            console.log(token);
-            
-            const response = await fetch('/api/assignTeam', {
+            console.log('token:', token);
+            const response = await fetch(`/api/assignTeam`, {
+            //const response = await fetch(`http://localhost:7700/api/assignTeam`, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({ teamId }),
+                body: JSON.stringify({ teamId, token }),
             });
-            // Team ID successfully gets read
-            //console.log(teamId);
+            //console.log('teamId:', teamId);
             const data = await response.json();
-            console.log('data:', data);
+            //console.log('data:', data);
             if (response.ok) {
                 setMessage('Team successfully assigned');
                 router.push('/dashboard');
@@ -71,7 +70,7 @@ export default function teamAssign() {
                 <label htmlFor="team">Select team:</label>
                 <select id="team" value={teamId} onChange={(e) => setTeamId(e.target.value)}>
                     var selected 
-                    <option value="selected" disabled="disabled">-- Select a Team --</option>
+                    <option value="" disabled>-- Select a Team --</option>
                     {teams.map((team) => (
                         <option key={team._id} value={team._id}>{team.name}</option>
                     ))}

@@ -25,13 +25,14 @@ export default function Login() {
         //console.log(data.JWToken);
         //console.log(data.user.team);
         if (response.ok) {
-            console.log(data);
+            //console.log(data);
             const selTeam = data.user.team;
+            localStorage.setItem('token', data.JWToken);
             if(!selTeam) {
-                localStorage.setItem('token', data.JWToken);
+                //localStorage.setItem('token', data.JWToken);
                 router.push('/teamAssign');
             } else {
-            localStorage.setItem('token', data.JWToken);
+            //localStorage.setItem('token', data.JWToken);
             router.push('/dashboard');
             }
             

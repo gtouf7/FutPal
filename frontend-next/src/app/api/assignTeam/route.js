@@ -1,15 +1,15 @@
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
-    const { team } = await req.json();
-    console.log('in here');
-    console.log(req.json());
+    const { teamId, token } = await req.json();
     try {
-        console.log(`${process.env.REACT_APP_PRODURL}/api/assignTeam`);
         const response = await fetch(`${process.env.REACT_APP_PRODURL}/api/assignTeam`, { //url to be changed with new backend deployed url
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ team })
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `${token}`,
+            },
+            body: JSON.stringify({ teamId })
         });
         const data = await response.json();
 

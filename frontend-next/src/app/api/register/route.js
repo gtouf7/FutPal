@@ -11,7 +11,7 @@ export async function POST(req) {
 
     try {
         // Connect to database
-        const response = await fetch(`${process.env.PRODURL}/api/register`, { //url to be changed with new backend deployed url
+        const response = await fetch(`${process.env.REACT_APP_PRODURL}/api/register`, { //url to be changed with new backend deployed url
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, email, password, country })
@@ -25,6 +25,5 @@ export async function POST(req) {
     } catch (error) {
         console.error(error);
         return NextResponse.json({ message: "Server error."}, { status: 500 });
-
     }
 }

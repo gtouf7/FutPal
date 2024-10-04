@@ -10,39 +10,21 @@ const cors = require('cors');
 // Models
 const User = require('./models/User');
 const Team = require('./models/Team');
+const getUser = require('./controllers/getUser');
 
 dotenv.config();
 
 // Initialize express app
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000', // PRODUCTION URL
+    methods: 'GET,POST',
+    allowedHeaders: ['Content-type', 'Authorization'],
+}));
 
 const port = process.env.PORT || 7700;
 
-// GET USER BY EMAIL FOR DEBUGGING PURPOSES
-app.get('/api/user', async (req, res) => {
-    await DBconn(); // connect to DB
-    // dummy email for testing with an existing user
-    const email = "test@email.com";
-    let user = await User.findOne({ email });
-    let teamId = user.team;
-    let team = await Team.findById(teamId);
-    console.log(team);
-    if (user) {
-        res.json({
-            user: {
-                username: user.username,
-                email: user.email,
-                selectedTeam: team.name,
-            }
-        });
-    } else {
-        res.status(400).json({ message: "Email doesn't exist" });
-    }
-    // debug database with updating passwords
-    //updateUserPassword('test@email.com', 'test123!');
-});
 
 // USER LOGIN 
 app.post('/api/login', async (req, res) => {
@@ -66,7 +48,7 @@ app.post('/api/login', async (req, res) => {
         // pwd match result
         console.log("pwd match result", isMatch);
         if (!isMatch) {
-            //console.log("Password incorrect");
+            console.log("Password incorrect");
             return res.status(400).json({ message: "Invalid credentials!" });
         }
 
@@ -83,8 +65,8 @@ app.post('/api/login', async (req, res) => {
 app.post('/api/register', async (req, res) => {
     // new user data required
     const { username, email, password, country, profileImage, team } = req.body;
-    console.log("got the data");
-    console.log(req.body);
+    //console.log("got the data");
+    //console.log(req.body);
     try {
         await DBconn();
         // Check if a user is already registered with this email
@@ -120,7 +102,7 @@ app.post('/api/register', async (req, res) => {
                 team: user.team,
             }
         });
-        console.log(user);
+        //console.log(user);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error.', error: error.message });
@@ -167,28 +149,22 @@ app.get('/api/teamList', async (req, res) => {
 
 // ASSIGN A TEAM TO THE NEW USER
 app.post('/api/assignTeam', tokenAuth, async (req, res) => {
-    console.log('INSIDE BACKEND CODE');
+    
+    //console.log('req:', req.user);
+    //console.log('body:', req.body);
     try {
         await DBconn();
         const userId = req.user.userId; // User's id from JWT
-        //console.log("zero:", req.user);
         const { teamId } = req.body; // User's selected team
-        console.log("first:", req.body);
 
         const user = await User.findById(userId); // Get the user
-        console.log("second:", user);
-        //console.log('teamid:', teamId);
-        
-
-        // Logic to check if the user has a team -- IF REQUIRED
-
         //fetch selected team
         const team = await Team.findById(teamId);
-        console.log("team:", team);
+        
         if (!team) {
             return res.status(400).json({ message: "Team not found." });
         }
-
+        
         //Assign the team to the user
         user.team = teamId;
         await user.save();
@@ -200,6 +176,8 @@ app.post('/api/assignTeam', tokenAuth, async (req, res) => {
     }
 });
 
+// CUSTOMIZED UX WHEN LOGGED IN
+app.get('/api/getUser', tokenAuth, getUser);
 
 
 // server portal
