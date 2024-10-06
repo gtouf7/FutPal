@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import styles from './dashboard.module.css';
+import Header from '../components/Header';
 
 export default function Dashboard() {
     const router = useRouter();
@@ -19,7 +20,7 @@ export default function Dashboard() {
                 router.push('/login'); 
             }
 
-        console.log('before fetch', token);
+        //console.log('before fetch', token);
         //fetching user data
         async function fetchUser() {
             try {
@@ -53,19 +54,12 @@ export default function Dashboard() {
 
     return(
         <div>
+            <Header />
             <h2>Welcome, {user && user.username}!</h2>
-            <nav>
-                <ul>
-                    <li>Roster</li>
-                    <li>Standings</li>
-                    <li>Calendar</li>
-                </ul>
-            </nav>
             <div>
                 <h3>Next game</h3>
                 { team } vs Arsenal
             </div>
-            <p className={styles.logOutBtn} onClick={logOut}>Log Out</p>
         </div>
     );
 }

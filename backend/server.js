@@ -10,6 +10,7 @@ const cors = require('cors');
 // Models
 const User = require('./models/User');
 const Team = require('./models/Team');
+const Player = require('./models/Player');
 //const getUser = require('./controllers/getUser');
 
 dotenv.config();
@@ -178,11 +179,19 @@ app.post('/api/assignTeam', tokenAuth, async (req, res) => {
 
 // CUSTOMIZED UX WHEN LOGGED IN
 app.get('/api/getUser', tokenAuth, async (req, res) => {
-    //await DBconn();
+    await DBconn();
+    
     //console.log('req in server.js', req);
     try {
-        const user = await User.findById(req.user.userId).populate('team');
-        //console.log('user:', user);
+        const user = await User.findById(req.user.userId).populate({
+            path: 'team',
+            populate: {
+                path: 'players',
+            }
+        });
+        const team = await Team.findById(user.team._id).populate('players');
+        console.log('Populated team with players:', team);
+        //console.log('user:', user.team.players);
         if (!user) {
             return res.status(404).json({ message: 'User not found.' });
         }
