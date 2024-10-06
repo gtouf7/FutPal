@@ -7,36 +7,43 @@ export default function Dashboard() {
     const router = useRouter();
     const [user, setUser] = useState('');
     const [ error, setError] = useState('');
-     // User authorization function to see if the user is logged in
-    function userAuth() {
-        useEffect(() => {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                router.push('/login'); // If there is no token this page will be inaccessible and will redirect the user to the login page
-            }
-        }, [router]);
-    }
+    const [ team, setTeam ] = useState('');
 
     
-    async function fetchUser() {
+    useEffect(() => {
+
+        // User authorization to see if the user is logged in
         const token = localStorage.getItem('token');
+            if (!token) {
+                // If there is no token this page will be inaccessible and will redirect the user to the login page
+                router.push('/login'); 
+            }
+
         console.log('before fetch', token);
-        try {
-            const response = await fetch('http://localhost:7700/api/getUser', {
+        //fetching user data
+        async function fetchUser() {
+            try {
+                const response = await fetch('/api/getUser', {
                 method: 'GET',
                 headers: { Authorization: `Bearer ${token}` },
             });
+
             const data = await response.json();
-            console.log(data);
+            //console.log(data.user.team.name);
+
             if (response.ok) {
                 setUser(data.user);
+                setTeam(data.user.team.name);
             } else {
                 setError('Error getting user');
             }
-        } catch (error) {
-            setError('Internal server error.');
+            } catch (error) {
+                setError('Internal server error.');
+            }
         }
-    }
+        fetchUser();
+    }, [router]);
+
     // Logout user
     function logOut() {
         localStorage.removeItem('token');
@@ -44,12 +51,9 @@ export default function Dashboard() {
         router.push('/');
     }
 
-    userAuth();
-    fetchUser();
-
     return(
         <div>
-            <h2>Welcome! {user && user.name}</h2>
+            <h2>Welcome, {user && user.username}!</h2>
             <nav>
                 <ul>
                     <li>Roster</li>
@@ -59,7 +63,7 @@ export default function Dashboard() {
             </nav>
             <div>
                 <h3>Next game</h3>
-
+                { team } vs Arsenal
             </div>
             <p className={styles.logOutBtn} onClick={logOut}>Log Out</p>
         </div>

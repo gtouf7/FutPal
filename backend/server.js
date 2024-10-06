@@ -10,7 +10,7 @@ const cors = require('cors');
 // Models
 const User = require('./models/User');
 const Team = require('./models/Team');
-const getUser = require('./controllers/getUser');
+//const getUser = require('./controllers/getUser');
 
 dotenv.config();
 
@@ -177,7 +177,21 @@ app.post('/api/assignTeam', tokenAuth, async (req, res) => {
 });
 
 // CUSTOMIZED UX WHEN LOGGED IN
-app.get('/api/getUser', tokenAuth, getUser);
+app.get('/api/getUser', tokenAuth, async (req, res) => {
+    //await DBconn();
+    //console.log('req in server.js', req);
+    try {
+        const user = await User.findById(req.user.userId).populate('team');
+        //console.log('user:', user);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+        res.status(200).json({ user });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error.'});
+    }
+});
 
 
 // server portal

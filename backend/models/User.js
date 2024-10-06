@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     country: String,
     profileImage: String,
-    team: String,
+    team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' },
     lastUpdated: Date,
     lastLogin: { type: Date, default: Date.now }
 }, {
