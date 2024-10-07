@@ -5,15 +5,21 @@ import { UserContext } from '../context/userContext';
 
 export default function Roster() {
 
-    const user = useContext(UserContext);
-    console.log(user);
-    return(
+    const {user, loading}= useContext(UserContext);
+
+    if (loading) {
+        return <p>Loading...</p>
+    }
+
+    return user ? (
         <div>
             <Header />
             <div>
                 <h2>Team Roster</h2>
-                <p> Hi, {user} </p>
+                <p> Hi, {user.username} </p>
             </div>
         </div>
+    ) : (
+        <p>Error</p>
     );
 };

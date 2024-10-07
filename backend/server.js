@@ -190,7 +190,7 @@ app.get('/api/getUser', tokenAuth, async (req, res) => {
             }
         });
         const team = await Team.findById(user.team._id).populate('players');
-        console.log('Populated team with players:', team);
+        //console.log('Populated team with players:', team);
         //console.log('user:', user.team.players);
         if (!user) {
             return res.status(404).json({ message: 'User not found.' });

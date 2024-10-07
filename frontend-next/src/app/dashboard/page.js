@@ -3,15 +3,19 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import styles from './dashboard.module.css';
 import Header from '../components/Header';
+import { UserContext } from "../context/userContext";
+import { useContext } from "react/";
 
 export default function Dashboard() {
     const router = useRouter();
-    const [user, setUser] = useState('');
+    //const [user, setUser] = useState('');
     const [ error, setError] = useState('');
-    const [ team, setTeam ] = useState('');
+    //const [ team, setTeam ] = useState('');
 
-    
-    useEffect(() => {
+    const { user, loading } = useContext(UserContext);
+
+    // COMMENTED OUT AS USERCONTEXT NO RENDERS THE PAGES AND COMPONENTS TO THE USER
+    /*useEffect(() => {
 
         // User authorization to see if the user is logged in
         const token = localStorage.getItem('token');
@@ -30,7 +34,7 @@ export default function Dashboard() {
             });
 
             const data = await response.json();
-            //console.log(data.user.team.name);
+            console.log(data.user);
 
             if (response.ok) {
                 setUser(data.user);
@@ -42,8 +46,8 @@ export default function Dashboard() {
                 setError('Internal server error.');
             }
         }
-        fetchUser();
-    }, [router]);
+        //fetchUser();
+    }, [router]); */
 
     // Logout user
     function logOut() {
@@ -52,7 +56,11 @@ export default function Dashboard() {
         router.push('/');
     }
 
-    return(
+    if (loading) {
+        return <p>Loading...</p>
+    }
+
+    return user ? (
         <div>
             <Header />
             <h2>Welcome, {user && user.username}!</h2>
@@ -61,5 +69,7 @@ export default function Dashboard() {
                 { team } vs Arsenal
             </div>
         </div>
+    ) : (
+        <p>Error loading user.</p>
     );
 }
