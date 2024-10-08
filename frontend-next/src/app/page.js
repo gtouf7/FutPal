@@ -5,7 +5,7 @@ import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <div class={styles.main}>
+    <div className={styles.main}>
       <img src="./futpal-logo-text.png" alt="FutPal logo"></img>
       <div>
         <p>BECOME a top class manager.</p>

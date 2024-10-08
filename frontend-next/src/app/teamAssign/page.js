@@ -2,9 +2,12 @@
 'use client';
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useContext } from "react";
+import { UserContext } from "../context/userContext";
 
 export default function teamAssign() {
     const router = useRouter();
+    const { refresh } = useContext(UserContext);
     const [ teams, setTeams ] = useState([]);
     const [ teamId, setTeamId ] = useState('');
     const [ message, setMessage ] = useState('');
@@ -16,6 +19,7 @@ export default function teamAssign() {
             router.push('/login'); // If there is no token this page will be inaccessible and will redirect the user to the login page
         }
     }, [router]);
+
     //console.log(process.env.REACT_APP_PRODURL);
     useEffect(() => {
         const teamList = async () => {
@@ -35,12 +39,11 @@ export default function teamAssign() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('team in the front:', teamId);
+        //console.log('team in the front:', teamId);
         try {
             const token = localStorage.getItem('token');
-            console.log('token:', token);
+            //console.log('token:', token);
             const response = await fetch(`/api/assignTeam`, {
-            //const response = await fetch(`http://localhost:7700/api/assignTeam`, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
@@ -50,9 +53,10 @@ export default function teamAssign() {
             });
             //console.log('teamId:', teamId);
             const data = await response.json();
-            //console.log('data:', data);
+            console.log('data:', data);
             if (response.ok) {
                 setMessage('Team successfully assigned');
+                await refresh(); // Refresh data with the assigned team to redirect to dashboard
                 router.push('/dashboard');
             } else {
                 setMessage(data.message || 'Error assigning team.');

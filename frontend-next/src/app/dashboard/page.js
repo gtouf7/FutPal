@@ -9,12 +9,17 @@ import { useContext } from "react/";
 export default function Dashboard() {
     const router = useRouter();
     //const [user, setUser] = useState('');
-    const [ error, setError] = useState('');
+    //const [ error, setError] = useState('');
     //const [ team, setTeam ] = useState('');
 
     const { user, loading } = useContext(UserContext);
 
-    // COMMENTED OUT AS USERCONTEXT NO RENDERS THE PAGES AND COMPONENTS TO THE USER
+    useEffect(() => {
+        if (!loading && !user) {
+            router.push('/');
+        }
+    }, [loading, user, router]);
+    // COMMENTED OUT AS USERCONTEXT NOW RENDERS THE PAGES AND COMPONENTS TO THE USER
     /*useEffect(() => {
 
         // User authorization to see if the user is logged in
@@ -66,7 +71,7 @@ export default function Dashboard() {
             <h2>Welcome, {user && user.username}!</h2>
             <div>
                 <h3>Next game</h3>
-                { team } vs Arsenal
+                { user.team.name } vs Arsenal
             </div>
         </div>
     ) : (
