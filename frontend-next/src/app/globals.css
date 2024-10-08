@@ -18,9 +18,9 @@ body {
 }
 
 body {
-  /*background: linear-gradient(0deg, #000 0%, #666 100%);*/
-  color: var(--foreground);
-  background: var(--background);
+  background: linear-gradient(0deg, #000 0%, #444 100%);
+  /*color: var(--foreground);
+  background: var(--background);*/
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
