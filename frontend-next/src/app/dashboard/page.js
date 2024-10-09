@@ -72,7 +72,7 @@ export default function Dashboard() {
     }
 
     return user ? (
-        <div>
+        <div className={styles.main}>
             <Header />
             <h2>Welcome, {user && user.username}!</h2>
             <div>

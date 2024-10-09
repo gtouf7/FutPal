@@ -236,6 +236,18 @@ app.get('/api/getUser', tokenAuth, async (req, res) => {
     }
 });
 
+// Get leagues for each user
+app.get('/api/getLeague', async (req, res) => {
+    try {
+        //const user = await UserLeague.findById(req.user.userId);
+        const leagues = await UserLeague.find();
+        res.json(leagues);
+    } catch (error) {
+        console.error('Error getting your league.', error);
+        res.status(500).json({ message: 'Server error.' });
+    }
+});
+
 
 // server portal
 app.listen(port, () => {

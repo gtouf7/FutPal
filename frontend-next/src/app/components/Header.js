@@ -21,6 +21,16 @@ export default function Header() {
     function goToRoster() {
         router.push("/roster");
     }
+
+    // 2. FIXTURES
+    function goToFixtures() {
+        router.push("/fixtures");
+    }
+
+    //3. STANDINGS
+    function goToStandings() {
+        router.push("/standings");
+    }
     // 4. Logout user
     function logOut() {
         localStorage.removeItem('token');
@@ -29,14 +39,15 @@ export default function Header() {
     }
     
     return(
-        <div>
+        <div className={styles.main}>
             <img src="/futpal-logo.png" alt="FutPal logo" />
             <nav>
                 <ul>
-                    <li onClick={goToHome}>Home</li>
-                    <li onClick={goToRoster}>Roster</li>
-                    <li>Fixtures</li>
-                    <li>Transfers</li>
+                    <li className={styles.listItem} onClick={goToHome}>Home</li>
+                    <li className={styles.listItem} onClick={goToRoster}>Roster</li>
+                    <li className={styles.listItem} onClick={goToStandings}>Standings</li>
+                    <li className={styles.listItem} onClick={goToFixtures}>Fixtures</li>
+                    <li className={styles.listItem}>Transfers</li>
                 </ul>
             </nav>
             <p className={styles.logOutBtn} onClick={logOut}>Log Out</p>
