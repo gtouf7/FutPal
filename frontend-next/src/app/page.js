@@ -16,11 +16,11 @@ export default function Home() {
       <Link href="/login">
         <button className={styles.actionBtn}>Play now</button>
       </Link>
-      <div>
+      <div className={styles.info}>
         <h2 className={styles.special}>What's FUTPAL?</h2>
         <p>Ever dreamt of playing the perfect football management simulator?
-          Where you don’t have to worry about having to play 60 games per season?
-          A game that lets you play a manager’s career in your own terms?
+          Where you don't have to worry about having to play 60 games per season?
+          A game that lets you play a manager's career in your own terms?
           That game is FUTPAL!
           Sign up today and start exploring your football managing skills!
         </p>

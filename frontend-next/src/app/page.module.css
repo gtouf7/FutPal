@@ -104,6 +104,12 @@
   color: #ffc300;
 }
 
+.info {
+  text-align: center;
+  color: #fff;
+  max-width: 70%;
+}
+
 /* Button */
 .actionBtn {
   width: 22.5rem;
