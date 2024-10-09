@@ -12,7 +12,6 @@ const User = require('./models/User');
 const Team = require('./models/Team');
 const Player = require('./models/Player');
 const UserLeague = require('./models/UserLeague');
-const UserLeague = require('./models/UserLeague');
 //const getUser = require('./controllers/getUser');
 
 dotenv.config();
@@ -184,33 +183,6 @@ app.post('/api/assignTeam', tokenAuth, async (req, res) => {
         res.status(500).json({ message: "Server error." });
     }
 });
-
-// NEW LEAGUE INITIALIZATION FUNCTION
-const initUserLeague = async (userId) => {
-    try {
-        const teams = await Team.find();
-
-        const userTeams = teams.map(team => ({
-            teamId: team._id,
-            stats: {
-                gp: 0,
-                pts: 0,
-                w: 0,
-                d: 0,
-                l: 0,
-                gf: 0,
-                ga: 0,
-                gd: 0,
-            },
-        }));
-        const newLeague = new UserLeague({ userId, teams: userTeams });
-        await newLeague.save();
-        return newLeague;
-    } catch (error) {
-        console.error("Error initializing league:", error);
-        throw new Error("League initialization failed.");
-    }
-}
 
 // NEW LEAGUE INITIALIZATION FUNCTION
 const initUserLeague = async (userId) => {

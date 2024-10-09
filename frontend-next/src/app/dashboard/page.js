@@ -78,7 +78,6 @@ export default function Dashboard() {
             <div>
                 <h3>Next game</h3>
                 { user.team.name } vs Arsenal
-                { user.team.name } vs Arsenal
             </div>
         </div>
     ) : (

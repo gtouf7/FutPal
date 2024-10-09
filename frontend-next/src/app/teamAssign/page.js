@@ -20,6 +20,7 @@ export default function teamAssign() {
         }
     }, [router]);
 
+
     //console.log(process.env.REACT_APP_PRODURL);
     useEffect(() => {
         const teamList = async () => {
@@ -40,10 +41,12 @@ export default function teamAssign() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         //console.log('team in the front:', teamId);
+        //console.log('team in the front:', teamId);
         try {
             const token = localStorage.getItem('token');
             console.log('token:', token);
             console.log('sendind fetch request');
+            //console.log('token:', token);
             const response = await fetch(`/api/assignTeam`, {
                 method: 'POST',
                 headers: {
@@ -55,10 +58,12 @@ export default function teamAssign() {
             //console.log('teamId:', teamId);
             const data = await response.json();
             console.log('data:', data);
+            console.log('data:', data);
             if (response.ok) {
                 console.log('response2:', response);
                 setMessage('Team successfully assigned');
                 refresh(); // Refresh data with the assigned team to redirect to dashboard
+                await refresh(); // Refresh data with the assigned team to redirect to dashboard
                 router.push('/dashboard');
             } else {
                 setMessage(data.message || 'Error assigning team.');
