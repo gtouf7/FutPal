@@ -5,19 +5,19 @@ import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <div class={styles.main}>
+    <div className={styles.main}>
       <img src="./futpal-logo-text.png" alt="FutPal logo"></img>
-      <div>
+      <div className={styles.startingTxT}>
         <p>BECOME a top class manager.</p>
         <p>CREATE your dream team.</p>
         <p>CONQUER the league.</p>
       </div>
       {/* Login button */}
       <Link href="/login">
-        <button>Play now</button>
+        <button className={styles.actionBtn}>Play now</button>
       </Link>
       <div>
-        <h2>What's FUTPAL?</h2>
+        <h2 className={styles.special}>What's FUTPAL?</h2>
         <p>Ever dreamt of playing the perfect football management simulator?
           Where you don’t have to worry about having to play 60 games per season?
           A game that lets you play a manager’s career in your own terms?
@@ -44,7 +44,7 @@ export default function Home() {
       </div>
       <h1>Join FUTPAL, your football pal!</h1>
       <Link href="/login">
-        <button>Play Now</button>
+        <button className={styles.actionBtn}>Play Now</button>
       </Link>
       <footer>
         <h2>FUTPAL</h2>

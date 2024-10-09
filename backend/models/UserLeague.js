@@ -5,16 +5,17 @@ const userLeagueSchema = new mongoose.Schema({
     teams: [{
         teamId: { type: mongoose.Schema.Types.ObjectId, ref: 'Team'},
         stats: {
-            gp: Number,
-            pts: Number,
-            w: Number,
-            d: Number,
-            l: Number,
-            gf: Number,
-            ga: Number,
-            gd: Number,
+            gp: { type: Number, default: 0 },
+            pts: { type: Number, default: 0 },
+            w: { type: Number, default: 0 },
+            d: { type: Number, default: 0 },
+            l: { type: Number, default: 0 },
+            gf: { type: Number, default: 0 },
+            ga: { type: Number, default: 0 },
+            gd: { type: Number, default: 0 },
         },
     }]
 });
 
 const UserLeague = mongoose.model('UserLeague', userLeagueSchema);
+module.exports = UserLeague;

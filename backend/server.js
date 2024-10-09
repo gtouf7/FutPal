@@ -11,6 +11,7 @@ const cors = require('cors');
 const User = require('./models/User');
 const Team = require('./models/Team');
 const Player = require('./models/Player');
+const UserLeague = require('./models/UserLeague');
 //const getUser = require('./controllers/getUser');
 
 dotenv.config();
@@ -47,7 +48,7 @@ app.post('/api/login', async (req, res) => {
         // Check password
         const isMatch = await bcrypt.compare(password, user.password);
         // pwd match result
-        console.log("pwd match result", isMatch);
+        //console.log("pwd match result", isMatch);
         if (!isMatch) {
             console.log("Password incorrect");
             return res.status(400).json({ message: "Invalid credentials!" });
@@ -159,8 +160,7 @@ app.post('/api/assignTeam', tokenAuth, async (req, res) => {
         const { teamId } = req.body; // User's selected team
 
         const user = await User.findById(userId); // Get the user
-        //fetch selected team
-        const team = await Team.findById(teamId);
+        const team = await Team.findById(teamId); //fetch selected team
         
         if (!team) {
             return res.status(400).json({ message: "Team not found." });
@@ -169,13 +169,46 @@ app.post('/api/assignTeam', tokenAuth, async (req, res) => {
         //Assign the team to the user
         user.team = teamId;
         await user.save();
-
+        //console.log('user chose:', user.team);
+        // Initialize league
+        let league = await UserLeague.findOne({ userId });
+        if (!league) {
+            league = await initUserLeague(userId);
+        }
+        //console.log('league:', league); 
         res.json({ message: "Team successfully assigned", user });
     } catch (error) {
         console.error("Error assigning team:", error);
         res.status(500).json({ message: "Server error." });
     }
 });
+
+// NEW LEAGUE INITIALIZATION FUNCTION
+const initUserLeague = async (userId) => {
+    try {
+        const teams = await Team.find();
+
+        const userTeams = teams.map(team => ({
+            teamId: team._id,
+            stats: {
+                gp: 0,
+                pts: 0,
+                w: 0,
+                d: 0,
+                l: 0,
+                gf: 0,
+                ga: 0,
+                gd: 0,
+            },
+        }));
+        const newLeague = new UserLeague({ userId, teams: userTeams });
+        await newLeague.save();
+        //return newLeague;
+    } catch (error) {
+        console.error("Error initializing league:", error);
+        throw new Error("League initialization failed.");
+    }
+}
 
 // CUSTOMIZED UX WHEN LOGGED IN
 app.get('/api/getUser', tokenAuth, async (req, res) => {
