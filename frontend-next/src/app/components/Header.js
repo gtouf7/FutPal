@@ -31,6 +31,7 @@ export default function Header() {
     function goToStandings() {
         router.push("/standings");
     }
+    
     // 4. Logout user
     function logOut() {
         localStorage.removeItem('token');
