@@ -44,8 +44,8 @@ export default function teamAssign() {
         //console.log('team in the front:', teamId);
         try {
             const token = localStorage.getItem('token');
-            console.log('token:', token);
-            console.log('sendind fetch request');
+            //console.log('token:', token);
+            //console.log('sending fetch request');
             //console.log('token:', token);
             const response = await fetch(`/api/assignTeam`, {
                 method: 'POST',
@@ -57,10 +57,9 @@ export default function teamAssign() {
             });
             //console.log('teamId:', teamId);
             const data = await response.json();
-            console.log('data:', data);
-            console.log('data:', data);
+            //console.log('data:', data);
             if (response.ok) {
-                console.log('response2:', response);
+                //console.log('response2:', response);
                 setMessage('Team successfully assigned');
                 refresh(); // Refresh data with the assigned team to redirect to dashboard
                 await refresh(); // Refresh data with the assigned team to redirect to dashboard

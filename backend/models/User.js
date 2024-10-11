@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     country: String,
     profileImage: String,
     team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' },
+    league: { type: mongoose.Schema.Types.ObjectId, ref: 'UserLeague'},
     lastUpdated: Date,
     lastLogin: { type: Date, default: Date.now }
 }, {

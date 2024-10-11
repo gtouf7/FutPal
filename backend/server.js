@@ -173,10 +173,13 @@ app.post('/api/assignTeam', tokenAuth, async (req, res) => {
         //console.log('user chose:', user.team);
         // Initialize league
         let league = await UserLeague.findOne({ userId });
+        console.log('League1:', league);
         if (!league) {
             league = await initUserLeague(userId);
         }
-        //console.log('league:', league); 
+        user.league = league._id;
+        await user.save();
+        console.log('user:', user.league); 
         res.json({ message: "Team successfully assigned", user });
     } catch (error) {
         console.error("Error assigning team:", error);
@@ -204,7 +207,8 @@ const initUserLeague = async (userId) => {
         }));
         const newLeague = new UserLeague({ userId, teams: userTeams });
         await newLeague.save();
-        //return newLeague;
+        console.log('New league created:', newLeague);
+        return newLeague;
     } catch (error) {
         console.error("Error initializing league:", error);
         throw new Error("League initialization failed.");
@@ -222,6 +226,11 @@ app.get('/api/getUser', tokenAuth, async (req, res) => {
             populate: {
                 path: 'players',
             }
+        }).populate({
+            path: 'league',
+            populate: {
+                path: 'teams.teamId',
+            }
         });
         const team = await Team.findById(user.team._id).populate('players');
         //console.log('Populated team with players:', team);
@@ -235,7 +244,6 @@ app.get('/api/getUser', tokenAuth, async (req, res) => {
         res.status(500).json({ message: 'Server error.'});
     }
 });
-
 // Get leagues for each user
 app.get('/api/getLeague', async (req, res) => {
     try {
