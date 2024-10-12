@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import styles from './standings.module.css';
 import Header from '../components/Header';
 import { UserContext } from "../context/userContext";
-import { useContext } from "react/";
+import { useContext } from "react";
 
 export default function Standings() {
     const { user, loading } = useContext(UserContext);
@@ -29,7 +29,7 @@ export default function Standings() {
     });
 
     return(
-        <div>
+        <div className={styles.standingsPage}>
             <Header />
             <h2>English Premier League Standings</h2>
             <div>

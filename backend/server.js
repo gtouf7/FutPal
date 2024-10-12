@@ -12,7 +12,7 @@ const User = require('./models/User');
 const Team = require('./models/Team');
 const Player = require('./models/Player');
 const UserLeague = require('./models/UserLeague');
-//const getUser = require('./controllers/getUser');
+const Fixture = require('./models/Fixture');
 
 dotenv.config();
 
@@ -173,14 +173,35 @@ app.post('/api/assignTeam', tokenAuth, async (req, res) => {
         //console.log('user chose:', user.team);
         // Initialize league
         let league = await UserLeague.findOne({ userId });
-        console.log('League1:', league);
+        //console.log('League1:', league);
         if (!league) {
             league = await initUserLeague(userId);
         }
         user.league = league._id;
         await user.save();
-        console.log('user:', user.league); 
-        res.json({ message: "Team successfully assigned", user });
+        //console.log('user:', user.league); 
+
+        //Generating the fixtures
+        const teams = league.teams.map(team => ({
+            id: team.teamId._id,
+            name: team.teamId.name
+        }));
+
+        const schedule = generateFixtures(teams);
+
+        const fixtureGen = new Fixture({
+            leagueId: league._id,
+            matches: schedule.map(match => ({
+                homeTeam: match.home.id,
+                awayTeam: match.away.id
+            }))
+        });
+        await fixtureGen.save();
+
+        const populatedFixture = await Fixture.findById(fixtureGen._id)
+        .populate('matches.homeTeam', 'name city country stadium')
+        .populate('matches.awayTeam', 'name city country stadium');
+        res.json({ message: "Team successfully assigned", user, fixtures: populatedFixture });
     } catch (error) {
         console.error("Error assigning team:", error);
         res.status(500).json({ message: "Server error." });
@@ -213,6 +234,43 @@ const initUserLeague = async (userId) => {
         console.error("Error initializing league:", error);
         throw new Error("League initialization failed.");
     }
+}
+
+//FIXTURE GENERATION FUNCTION
+function generateFixtures(teams) {
+    const teamList = shuffleArray([...teams]);
+    const rounds = [];
+    const numberOfTeams = teams.length;
+    const numberOfRounds = (numberOfTeams - 1) * 2;
+    const halfSize = numberOfTeams / 2;
+
+
+    for (let round = 0; round < numberOfRounds / 2; round++) {
+        const roundFixtures = [];
+        for (let i = 0; i < halfSize; i++) {
+            const home = teamList[i];
+            const away = teamList[numberOfTeams - 1 - i];
+
+            if (home && away) {
+                roundFixtures.push({ home, away });
+            }
+        }
+        rounds.push(roundFixtures);
+        teamList.splice(1, 0, teamList.pop());
+    }
+    // Home and away matches
+    const schedule = [...rounds, ...rounds.map(round => 
+        round.map(({ home, away }) => ({ home: away, away: home }))
+    )];
+    return schedule.flat();
+}
+
+function shuffleArray(array) {
+    for(let i = array.length -1; i> 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j] = array[j], array[i]];
+    }
+    return array;
 }
 
 // CUSTOMIZED UX WHEN LOGGED IN
@@ -255,7 +313,6 @@ app.get('/api/getLeague', async (req, res) => {
         res.status(500).json({ message: 'Server error.' });
     }
 });
-
 
 // server portal
 app.listen(port, () => {
