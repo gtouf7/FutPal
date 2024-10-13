@@ -14,7 +14,8 @@ const userLeagueSchema = new mongoose.Schema({
             ga: { type: Number, default: 0 },
             gd: { type: Number, default: 0 },
         },
-    }]
+    }],
+    fixtures: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Fixture' }]
 });
 
 const UserLeague = mongoose.model('UserLeague', userLeagueSchema);

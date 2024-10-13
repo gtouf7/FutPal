@@ -14,6 +14,7 @@ export default function Fixtures() {
     if (!user || !user.league || !user.league.teams) {
         return <p>Loading your data...</p> 
     }
+    console.log(user.league);
     const teams = user.league.teams.map((team) => ({
         id: team.teamId._id,
         name: team.teamId.name
