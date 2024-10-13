@@ -14,20 +14,35 @@ export default function Fixtures() {
     if (!user || !user.league || !user.league.teams) {
         return <p>Loading your data...</p> 
     }
-    console.log(user.league);
-    const teams = user.league.teams.map((team) => ({
-        id: team.teamId._id,
-        name: team.teamId.name
-    }));
+    //console.log('user:', user);
+    const fixtures = user.league.fixtures[0].matches;
+    //console.log(fixtures);
+    const matchdays = fixtures.reduce((acc, fixture, index) => {
+        const matchday = Math.floor(index / 2) + 1;
+        if (!acc[matchday]) acc[matchday] = [];
+        acc[matchday].push(fixture);
+        return acc;
+    }, {});
     
-    //schedule generator
-    function ScheduleGenerator(teams) {
-        return 0;
-    }
     return(
         <div className={styles.fixturesPage}>
             <Header />
             <h2>Fixtures</h2>
+            {/* Matchday rendering */}
+            {Object.keys(matchdays).map((matchday) => (
+                <div key={matchday} className={styles.matchday}>
+                    <h3>Matchday {matchday}</h3>
+                    {matchdays[matchday].map((fixture, index)=> (
+                        <p key={index}>
+                        {fixture.homeTeam.name}{" "}
+                        {fixture.result.home !== null && fixture.result.away !== null
+                        ? `${fixture.result.home}-${fixture.result.away}`
+                        : "vs"}{" "}
+                        {fixture.awayTeam.name}
+                    </p>
+                    ))}
+                </div>
+            ))}
         </div>
     );
 }

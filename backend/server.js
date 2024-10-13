@@ -197,10 +197,16 @@ app.post('/api/assignTeam', tokenAuth, async (req, res) => {
             }))
         });
         await fixtureGen.save();
+        //console.log('fixturegen:', fixtureGen);
+        league.fixtures.push(fixtureGen._id);
+        //console.log('fixtureId:', fixtureGen._id);
+        await league.save();
+        console.log('league:', league);
 
         const populatedFixture = await Fixture.findById(fixtureGen._id)
         .populate('matches.homeTeam', 'name city country stadium')
         .populate('matches.awayTeam', 'name city country stadium');
+        //console.log('populatedfixture:', populatedFixture);
         res.json({ message: "Team successfully assigned", user, fixtures: populatedFixture });
     } catch (error) {
         console.error("Error assigning team:", error);
@@ -228,7 +234,7 @@ const initUserLeague = async (userId) => {
         }));
         const newLeague = new UserLeague({ userId, teams: userTeams });
         await newLeague.save();
-        console.log('New league created:', newLeague);
+        //console.log('New league created:', newLeague);
         return newLeague;
     } catch (error) {
         console.error("Error initializing league:", error);
@@ -286,11 +292,20 @@ app.get('/api/getUser', tokenAuth, async (req, res) => {
             }
         }).populate({
             path: 'league',
-            populate: {
+            populate: [
+                {
                 path: 'teams.teamId',
-            }
+                },
+                {
+                    path: 'fixtures',
+                    populate: [
+                        { path: 'matches.homeTeam', select: 'name city country stadium' },
+                        { path: 'matches.awayTeam', select: 'name city country stadium' }
+                    ]
+                }
+            ]
         });
-        const team = await Team.findById(user.team._id).populate('players');
+        //const team = await Team.findById(user.team._id).populate('players');
         //console.log('Populated team with players:', team);
         //console.log('user:', user.team.players);
         if (!user) {
@@ -310,6 +325,65 @@ app.get('/api/getLeague', async (req, res) => {
         res.json(leagues);
     } catch (error) {
         console.error('Error getting your league.', error);
+        res.status(500).json({ message: 'Server error.' });
+    }
+});
+
+// GAME MODE FUNCTIONS AND ROUTE
+const simulateMatch = (homeOVR, awayOVR) => {
+    const total = homeOVR + awayOVR;
+    const homeWinChances = homeOVR / total;
+    const awayWinChances = awayOVR / total;
+
+    const randomOutcome = Math.random();
+
+    if (randomOutcome < homeWinChances) {
+        //Home wins
+        return { home: Math.floor(Math.random() * 5), away: Math.floor(Math.random() * 3)};
+    } else if (randomOutcome < homeWinChances + awayWinChances) {
+        //Away team wins
+        return { home: Math.floor(Math.random() *3), away: Math.floor(Math.random() * 5)};
+    } else {
+        //Draw
+        return { home: Math.floor(Math.random() * 3), away: Math.floor(Math.random() * 3)};
+    }
+}
+
+//Route
+app.post('/api/matchSimulator', async (req, res) => {
+    await DBconn();
+    const { fixtureId, matchId } = req.body;
+    try {
+        const fixture = await Fixture.findById(fixtureId)
+        .populate({
+            path: 'matches.homeTeam',
+            populate: { path: 'players' }
+        })
+        .populate({
+            path: 'matches.awayTeam',
+            populate: { path: 'players' }
+        });
+        console.log('fixture', fixture);
+        const match = fixture.matches.id(matchId);
+        console.log('match:', match);
+        if (!match) {
+            return res.status(404).json({ message: 'Match not found.'});
+        }
+        //console.log(match.homeTeam);
+        const homeOVR = match.homeTeam.players.reduce((acc, player) => acc + player.OVR, 0);
+        const awayOVR = match.awayTeam.players.reduce((acc, player) => acc + player.OVR, 0);
+
+        console.log(homeOVR);
+        //Sim match
+        const result = simulateMatch(homeOVR, awayOVR);
+        console.log(result);
+        //Update the fixture results
+        match.result = { home: result.home, away: result.away };
+        await fixture.save();
+
+        res.json({ message: 'Match result:', result });
+    } catch (error) {
+        console.error('Error simulating the match:', error);
         res.status(500).json({ message: 'Server error.' });
     }
 });

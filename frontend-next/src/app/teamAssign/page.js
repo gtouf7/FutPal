@@ -26,7 +26,7 @@ export default function teamAssign() {
         const teamList = async () => {
             try {
                 const response = await fetch(`/api/teamList`);
-                console.log('response', response);
+                //console.log('response', response);
                 const data = await response.json();
                 //console.log(data);
                 setTeams(data);

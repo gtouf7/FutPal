@@ -15,6 +15,9 @@ export default function Dashboard() {
 
     const { user, loading } = useContext(UserContext);
 
+    if (loading) {
+        return <p>Loading...</p>
+    }
     useEffect(() => {
         if (!loading && !user) {
             router.push('/');
