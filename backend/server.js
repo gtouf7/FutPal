@@ -350,7 +350,7 @@ const simulateMatch = (homeOVR, awayOVR) => {
 }
 
 //Route
-app.post('/api/matchSimulator', async (req, res) => {
+app.post('/api/matchSimulator', tokenAuth, async (req, res) => {
     await DBconn();
     const { fixtureId, matchId } = req.body;
     try {
@@ -363,9 +363,9 @@ app.post('/api/matchSimulator', async (req, res) => {
             path: 'matches.awayTeam',
             populate: { path: 'players' }
         });
-        console.log('fixture', fixture);
+        //console.log('fixture', fixture);
         const match = fixture.matches.id(matchId);
-        console.log('match:', match);
+        //console.log('match:', match);
         if (!match) {
             return res.status(404).json({ message: 'Match not found.'});
         }
@@ -373,14 +373,58 @@ app.post('/api/matchSimulator', async (req, res) => {
         const homeOVR = match.homeTeam.players.reduce((acc, player) => acc + player.OVR, 0);
         const awayOVR = match.awayTeam.players.reduce((acc, player) => acc + player.OVR, 0);
 
-        console.log(homeOVR);
         //Sim match
         const result = simulateMatch(homeOVR, awayOVR);
-        console.log(result);
+        //console.log('result:', result);
+
         //Update the fixture results
         match.result = { home: result.home, away: result.away };
         await fixture.save();
 
+
+        //Update league table stats
+        //console.log('req:', req.user);
+        const league = await UserLeague.findOne({ userId: req.user.userId });
+        //console.log(league)
+        //Find the respective teams
+        const homeTeam = league.teams.find(team => team.teamId.equals(match.homeTeam._id));
+        const awayTeam = league.teams.find(team => team.teamId.equals(match.awayTeam._id));
+
+        if (!homeTeam || !awayTeam) {
+            return res.status(404).json({ message: 'Teams not found' });
+        }
+
+        //stats update
+        homeTeam.stats.gp += 1;
+        awayTeam.stats.gp += 1;
+
+        if (result.home > result.away) {
+            //home win
+            homeTeam.stats.w += 1;
+            homeTeam.stats.pts += 3;
+            awayTeam.stats.l += 1;
+        } else if (result.away > result.home) {
+            //Away win
+            awayTeam.stats.w += 1;
+            awayTeam.stats.pts += 3;
+            homeTeam.stats.l += 1;
+        } else {
+            //Draw
+            homeTeam.stats.d += 1;
+            awayTeam.stats.d += 1;
+            homeTeam.stats.pts += 1;
+            awayTeam.stats.pts +=1;
+        }
+        //home goals
+        homeTeam.stats.gf += result.home;
+        homeTeam.stats.ga += result.away;
+        homeTeam.stats.gd = homeTeam.stats.gf - homeTeam.stats.ga;
+        //away goals
+        awayTeam.stats.gf += result.away;
+        awayTeam.stats.ga += result.home;
+        awayTeam.stats.gd = awayTeam.stats.gf - awayTeam.stats.ga;
+
+        await league.save();
         res.json({ message: 'Match result:', result });
     } catch (error) {
         console.error('Error simulating the match:', error);
