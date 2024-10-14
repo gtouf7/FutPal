@@ -204,8 +204,8 @@ app.post('/api/assignTeam', tokenAuth, async (req, res) => {
         console.log('league:', league);
 
         const populatedFixture = await Fixture.findById(fixtureGen._id)
-        .populate('matches.homeTeam', 'name city country stadium')
-        .populate('matches.awayTeam', 'name city country stadium');
+        .populate('matches.homeTeam', 'name city country stadium logo')
+        .populate('matches.awayTeam', 'name city country stadium logo');
         //console.log('populatedfixture:', populatedFixture);
         res.json({ message: "Team successfully assigned", user, fixtures: populatedFixture });
     } catch (error) {
@@ -299,12 +299,13 @@ app.get('/api/getUser', tokenAuth, async (req, res) => {
                 {
                     path: 'fixtures',
                     populate: [
-                        { path: 'matches.homeTeam', select: 'name city country stadium' },
-                        { path: 'matches.awayTeam', select: 'name city country stadium' }
+                        { path: 'matches.homeTeam', select: 'name city country stadium logo' },
+                        { path: 'matches.awayTeam', select: 'name city country stadium logo' }
                     ]
                 }
             ]
         });
+        console.log(user);
         //const team = await Team.findById(user.team._id).populate('players');
         //console.log('Populated team with players:', team);
         //console.log('user:', user.team.players);

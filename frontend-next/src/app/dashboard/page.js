@@ -28,40 +28,6 @@ export default function Dashboard() {
             router.push('/dashboard');
         }
     }, [loading, user, router]);
-    // COMMENTED OUT AS USERCONTEXT NOWW RENDERS THE PAGES AND COMPONENTS TO THE USER
-    /*useEffect(() => {
-
-        // User authorization to see if the user is logged in
-        const token = localStorage.getItem('token');
-            if (!token) {
-                // If there is no token this page will be inaccessible and will redirect the user to the login page
-                router.push('/login'); 
-            }
-
-        //console.log('before fetch', token);
-        //fetching user data
-        async function fetchUser() {
-            try {
-                const response = await fetch('/api/getUser', {
-                method: 'GET',
-                headers: { Authorization: `Bearer ${token}` },
-            });
-
-            const data = await response.json();
-            console.log(data.user);
-
-            if (response.ok) {
-                setUser(data.user);
-                setTeam(data.user.team.name);
-            } else {
-                setError('Error getting user');
-            }
-            } catch (error) {
-                setError('Internal server error.');
-            }
-        }
-        //fetchUser();
-    }, [router]); */
 
     // Logout user
     function logOut() {
@@ -71,16 +37,21 @@ export default function Dashboard() {
     }
 
     if (loading) {
-        return <p>Loading...</p>
+        return <p>Loading your data. Please wait.</p>
     }
+
+    //Get fixtures for display
+    const fixtures = user.league.fixtures[0].matches;
+    console.log(fixtures)
 
     return user ? (
         <div className={styles.main}>
             <Header />
             <h2>Welcome, {user && user.username}!</h2>
-            <div>
+            <div className={styles.match}>
                 <h3>Next game</h3>
-                { user.team.name } vs Arsenal
+                <p><img src={fixtures[2].homeTeam.logo.img}></img> - <img src={fixtures[2].awayTeam.logo.img}></img></p>
+                <button>Play Game</button>
             </div>
         </div>
     ) : (
