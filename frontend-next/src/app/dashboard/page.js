@@ -8,10 +8,6 @@ import { useContext } from "react/";
 
 export default function Dashboard() {
     const router = useRouter();
-    //const [user, setUser] = useState('');
-    //const [ error, setError] = useState('');
-    //const [ error, setError] = useState('');
-    //const [ team, setTeam ] = useState('');
 
     const { user, loading } = useContext(UserContext);
 
@@ -36,13 +32,38 @@ export default function Dashboard() {
         router.push('/');
     }
 
+
+    //Get fixtures for display
+    const fixtures = user.league.fixtures[0].matches;
+    console.log(fixtures);
+
     if (loading) {
         return <p>Loading your data. Please wait.</p>
     }
 
-    //Get fixtures for display
-    const fixtures = user.league.fixtures[0].matches;
-    console.log(fixtures)
+    const [gamePlayed, setGamePlayer] = useState(false);
+    const [currentFixture, setCurrentFixture] = useState(null);
+    //Play game button
+    useEffect(() => {
+        const nextFixture = user.league.fixture.find(fixture => 
+            fixture.matches.some(match)
+        )
+
+
+
+        const handlePlayGame = async () => {
+            if (!gamePlayed) {
+                const response = await fetch('/api/matchSimulator', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    },
+                    body: JSON.stringify({ fixtureId: })
+                })
+            }
+        }
+    })
 
     return user ? (
         <div className={styles.main}>
@@ -50,8 +71,8 @@ export default function Dashboard() {
             <h2>Welcome, {user && user.username}!</h2>
             <div className={styles.match}>
                 <h3>Next game</h3>
-                <p><img src={fixtures[2].homeTeam.logo.img}></img> - <img src={fixtures[2].awayTeam.logo.img}></img></p>
-                <button>Play Game</button>
+                <p><img src={fixtures[4].homeTeam.logo.img}></img> - <img src={fixtures[2].awayTeam.logo.img}></img></p>
+                <button>{Btn}</button>
             </div>
         </div>
     ) : (
