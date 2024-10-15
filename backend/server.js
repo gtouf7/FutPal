@@ -331,6 +331,18 @@ app.get('/api/getLeague', async (req, res) => {
     }
 });
 
+//get Player list
+app.get('/api/getPlayers', async (req, res) => {
+    await DBconn(); // Connect to DB
+    try {
+        const players = await Player.find();
+        res.json(players);
+    } catch (error) {
+        console.error("Error fething players", error); //debugging
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
 // GAME MODE FUNCTIONS AND ROUTE
 const simulateMatch = (homeOVR, awayOVR) => {
     const total = homeOVR + awayOVR;

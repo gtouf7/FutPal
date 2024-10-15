@@ -14,6 +14,7 @@ export default function Dashboard() {
     const [ownTeamMatch, setOwnTeamMatch] = useState(false);
 
     
+    
     // Check if user is logged in and redirect if not
     useEffect(() => {
         if (!loading && !user) {
@@ -84,7 +85,7 @@ export default function Dashboard() {
             await simulateRemainingGames(currentFixture);
         }
     };
-    console.log(ownTeamMatch);
+    
     const simulateRemainingGames = async (fixture) => {
         for (const match of fixture.matches) {
             if (match.result.home === null && match.result.away === null) {
@@ -101,7 +102,7 @@ export default function Dashboard() {
             }
         }
     };
-
+    console.log(user);
     return user ? (
         <div className={styles.main}>
             <Header />

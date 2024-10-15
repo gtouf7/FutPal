@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
     team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' },
     league: { type: mongoose.Schema.Types.ObjectId, ref: 'UserLeague'},
     admin: { type: Boolean, default: false },
+    coins: { type: Number, default: 10 },
     lastUpdated: Date,
     lastLogin: { type: Date, default: Date.now }
 }, {

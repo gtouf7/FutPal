@@ -9,8 +9,9 @@ export default function Header() {
      * 0. HOME
      * 1. ROSTER
      * 2. FIXTURES
-     * 3. TRANSFERS
-     * 4. LOGOUT
+     * 3. STANDINGS
+     * 4. TRANSFERS
+     * 5. LOGOUT
      */
 
     // 0. Home
@@ -31,8 +32,13 @@ export default function Header() {
     function goToStandings() {
         router.push("/standings");
     }
+
+    //5. TRANSFERS
+    function goToTransfers() {
+        router.push("/transfers");
+    }
     
-    // 4. Logout user
+    // 5. Logout user
     function logOut() {
         localStorage.removeItem('token');
         //console.log('User signed out successfully!'); //debugging
@@ -48,7 +54,7 @@ export default function Header() {
                     <li className={styles.listItem} onClick={goToRoster}>Roster</li>
                     <li className={styles.listItem} onClick={goToStandings}>Standings</li>
                     <li className={styles.listItem} onClick={goToFixtures}>Fixtures</li>
-                    <li className={styles.listItem}>Transfers</li>
+                    <li className={styles.listItem} onClick={goToTransfers}>Transfers</li>
                 </ul>
             </nav>
             <p className={styles.logOutBtn} onClick={logOut}>Log Out</p>

@@ -8,6 +8,7 @@ const playerSchema = new mongoose.Schema ({
     position: { type: String, required: true },
     positionSec: String,
     nationality: String,
+    price: Number,
     team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' } // get current team for player
 });
 
