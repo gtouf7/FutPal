@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
     profileImage: String,
     team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' },
     league: { type: mongoose.Schema.Types.ObjectId, ref: 'UserLeague'},
+    admin: { type: Boolean, default: false },
     lastUpdated: Date,
     lastLogin: { type: Date, default: Date.now }
 }, {

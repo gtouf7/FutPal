@@ -9,12 +9,13 @@ export default function Roster() {
     if (loading) {
         return <p>Loading...</p>
     }
-    //console.log(user);
+    console.log(user.team.players);
     return user ? (
         <div>
             <Header />
             <div>
                 <h2>Team Roster</h2>
+                <img src={user.team.logo.img} alt={user.team.logo.alt}></img>
                 <p>{user.team.name} </p>
                 <ul>
                     {user.team.players.map((player) => (

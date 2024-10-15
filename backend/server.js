@@ -13,6 +13,7 @@ const Team = require('./models/Team');
 const Player = require('./models/Player');
 const UserLeague = require('./models/UserLeague');
 const Fixture = require('./models/Fixture');
+const adminAuth = require('./auth/adminAuth');
 
 dotenv.config();
 
@@ -430,6 +431,40 @@ app.post('/api/matchSimulator', tokenAuth, async (req, res) => {
     } catch (error) {
         console.error('Error simulating the match:', error);
         res.status(500).json({ message: 'Server error.' });
+    }
+});
+//admin routes call
+app.post('/admin/addTeam', adminAuth, async (req, res) => {
+    const { name, city, country, stadium, logo } = req.body;
+
+    try {
+        const newTeam = new Team({ name, city, country, stadium, logo });
+        await newTeam.save();
+        res.status(201).json({ message: 'Team added successfully', team: newTeam });
+    } catch (error) {
+        res.status(500).json({ message: 'Error adding team', error: error.message });
+    }
+});
+
+app.post('/admin/addPlayer', adminAuth, async (req, res) => {
+    const { Fname, Lname, position, OVR, teamId, jerseyNO } = req.body;
+
+    try {
+        const player = new Player({ Fname, Lname, position, OVR, jerseyNO });
+        await player.save();
+
+        // Assign the player to the team if provided
+        if (teamId) {
+            const team = await Team.findById(teamId);
+            if (team) {
+                team.players.push(player._id);
+                await team.save();
+            }
+        }
+
+        res.status(201).json({ message: 'Player added successfully', player });
+    } catch (error) {
+        res.status(500).json({ message: 'Error adding player', error: error.message });
     }
 });
 

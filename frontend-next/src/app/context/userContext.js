@@ -1,5 +1,5 @@
 'use client';
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
 export const UserContext = createContext();
@@ -9,7 +9,7 @@ export const UserProvider = ({ children }) => {
     const [ loading, setLoading ] = useState(true);
     const router = useRouter();
     
-    const userData = async () => {
+    const userData = useCallback(async () => {
         const token = localStorage.getItem('token');
         if (token) {
             try {
@@ -21,7 +21,7 @@ export const UserProvider = ({ children }) => {
                 });
                 const data = await response.json();
                 //console.log('data:', data);
-                setUser(data.user);
+                setUser(prevUser => prevUser !== data.user ? data.user : prevUser);
             } catch (error) {
                 console.error('Error fetching user:', error);
             }
@@ -29,11 +29,11 @@ export const UserProvider = ({ children }) => {
             router.push('/');
         }
         setLoading(false); // Remove loading when content is fetched
-    };
+    }, [router]);
 
     useEffect(() => {
         userData();
-    }, []);
+    }, [userData]);
 
     return(
         <UserContext.Provider value={{ user, loading, refresh: userData }}>
